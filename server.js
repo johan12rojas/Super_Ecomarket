@@ -472,8 +472,14 @@ app.get('/api/admin/stats', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
-});
+// Solo iniciar el servidor si no estamos en producción (Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  });
+}
+
+// Exportar la app para Vercel
+module.exports = app;
 
 
