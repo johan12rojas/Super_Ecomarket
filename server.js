@@ -9,6 +9,12 @@ const PORT = process.env.PORT || 54112;
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Servir archivos estáticos desde diferentes carpetas
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/views', express.static(path.join(__dirname, 'views')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Ensure schema
@@ -470,6 +476,19 @@ app.get('/api/admin/stats', (req, res) => {
     console.error('Error obteniendo estadísticas de admin:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
+});
+
+// Rutas para servir páginas HTML
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin.html'));
+});
+
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'profile.html'));
 });
 
 // Solo iniciar el servidor si no estamos en producción (Vercel)
